@@ -1,12 +1,11 @@
 // Letter content - EDIT THIS
 const letterContent = [
-    "My dearest Ellie,",
-    "From the moment you entered my life, everything changed. The world became brighter, the air sweeter, and every day became a gift I look forward to unwrapping.",
-    "Your laughter is my favorite melody, your smile my favorite sight. When I'm with you, time stands still, and yet somehow flies by too fast. You have this magical way of making the ordinary extraordinary.",
-    "I cherish every moment we share—the quiet ones where we simply exist together, and the wild ones where we create memories that will last lifetimes. You are my safe harbor and my greatest adventure all at once.",
-    "Thank you for being exactly who you are. For your kindness that knows no bounds, your strength that inspires me, and your love that fills every corner of my heart.",
-    "I promise to stand by you through every chapter life writes for us. To celebrate your victories as my own, to hold you through storms, and to love you more deeply with each passing sunrise.",
-    "You are my today and all of my tomorrows. My heart is yours, completely and forever."
+    "hi babi",
+    "you know mahal na mahal na mahal na mahal kita hihihi, wala man po ginawa ko lang ning website para gumawa ng letter baby, maganda ba??",
+    "btw baby, masusunog talaga yan after 60 seconds, kaya go fasterrr HAHAHA. Wala man ngane, gusto ko lang gumawa ng letter po, kase ano. Why not?",
+    "babi nag away man po kase tayo :<< ayaw man po, pero opo I know it's just my actions that makes you mad diba po? I promise baby babaguhin po I promise",
+    "idk if mababasa mo pa toh, medyo mahaba naman ata, di ko man makita kase ngane nasa raw code ako nag-eedit rn, di ko makita yung mismong text huhuhu sa code lang ako nagbbase",
+    "di man ako marunong magcode, nagaaral lang baby ko. Ayy bastaaaa I love you so muchhhh nalang :>> tingnan mo yung sa baba, may kiss"
 ];
 
 let burnTimer;
@@ -50,7 +49,7 @@ function renderLetter() {
     // Add wax seal
     const seal = document.createElement('div');
     seal.className = 'wax-seal';
-    seal.textContent = '💕';
+    seal.textContent = '🌕';
     container.appendChild(seal);
 }
 
@@ -79,7 +78,7 @@ function startBurning() {
     const ashesMsg = document.getElementById('ashesMessage');
 
     // Change warning text
-    warning.textContent = "🔥 The letter is burning! 🔥";
+    warning.textContent = "nasunog naaaa";
     
     // Activate effects
     letter.classList.add('burning');
