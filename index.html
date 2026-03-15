@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For You 💌</title>
+    <title>For Ellie 💌</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap');
+        
         * {
             margin: 0;
             padding: 0;
@@ -12,42 +14,52 @@
         }
 
         body {
-            font-family: 'Georgia', 'Times New Roman', serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow-x: hidden;
+            position: relative;
         }
 
-        /* Floating hearts background animation */
-        .hearts-container {
+        /* Animated background particles */
+        .particles {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
             overflow: hidden;
             z-index: 0;
+            pointer-events: none;
         }
 
-        .heart {
+        .particle {
             position: absolute;
-            color: rgba(255, 255, 255, 0.3);
-            font-size: 20px;
-            animation: float 15s infinite linear;
-            bottom: -100px;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 215, 0, 0.6);
+            border-radius: 50%;
+            animation: float-up 15s infinite linear;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
         }
 
-        @keyframes float {
+        @keyframes float-up {
             0% {
-                transform: translateY(0) rotate(0deg);
+                transform: translateY(100vh) translateX(0) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            90% {
                 opacity: 1;
             }
             100% {
-                transform: translateY(-100vh) rotate(360deg);
+                transform: translateY(-100vh) translateX(50px) scale(0);
                 opacity: 0;
             }
         }
@@ -56,55 +68,636 @@
         .container {
             position: relative;
             z-index: 1;
-            width: 90%;
-            max-width: 600px;
-            perspective: 1000px;
+            width: 92%;
+            max-width: 650px;
+            perspective: 1500px;
         }
 
-        /* Password Screen */
+        /* Password Screen - Glassmorphism style */
         .password-screen {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 50px 40px;
             text-align: center;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 
+                        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
             transform-style: preserve-3d;
-            transition: all 0.6s ease;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .password-screen.hidden {
             opacity: 0;
-            transform: rotateY(-90deg);
+            transform: rotateX(-90deg) translateY(-50px);
             pointer-events: none;
         }
 
         .lock-icon {
-            font-size: 60px;
-            margin-bottom: 20px;
+            font-size: 70px;
+            margin-bottom: 25px;
             display: block;
+            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.5));
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
 
         .password-screen h2 {
-            color: #764ba2;
-            margin-bottom: 10px;
-            font-size: 1.8rem;
+            color: #ffd700;
+            margin-bottom: 12px;
+            font-size: 2.2rem;
+            font-family: 'Dancing Script', cursive;
+            text-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
         }
 
         .hint {
-            color: #888;
-            font-size: 0.9rem;
-            margin-bottom: 25px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1rem;
+            margin-bottom: 30px;
             font-style: italic;
+            letter-spacing: 0.5px;
         }
 
         .password-input {
             width: 100%;
-            padding: 15px 20px;
-            font-size: 1.1rem;
-            border: 2px solid #ddd;
+            max-width: 300px;
+            padding: 18px 25px;
+            font-size: 1.2rem;
+            border: 2px solid rgba(255, 215, 0, 0.3);
             border-radius: 50px;
             outline: none;
+            transition: all 0.3s ease;
+            text-align: center;
+            margin-bottom: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            color: #fff;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .password-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .password-input:focus {
+            border-color: #ffd700;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .password-input.error {
+            border-color: #ff4757;
+            animation: shake 0.5s;
+            box-shadow: 0 0 20px rgba(255, 71, 87, 0.3);
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-15px); }
+            40% { transform: translateX(15px); }
+            60% { transform: translateX(-10px); }
+            80% { transform: translateX(10px); }
+        }
+
+        .unlock-btn {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #1a1a2e;
+            border: none;
+            padding: 16px 45px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-family: 'Cormorant Garamond', serif;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .unlock-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.4);
+        }
+
+        .unlock-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .error-message {
+            color: #ff6b6b;
+            font-size: 0.95rem;
+            margin-top: 15px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-weight: 600;
+        }
+
+        .error-message.show {
+            opacity: 1;
+        }
+
+        /* Letter Screen - Vintage Parchment */
+        .letter-screen {
+            display: none;
+            background: #f4e4c1;
+            border-radius: 8px;
+            padding: 0;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.5),
+                inset 0 0 100px rgba(139, 69, 19, 0.1);
+            overflow: hidden;
+            transform-style: preserve-3d;
+            opacity: 0;
+            transform: rotateX(90deg) translateY(50px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .letter-screen.show {
+            display: block;
+            opacity: 1;
+            transform: rotateX(0deg) translateY(0);
+        }
+
+        /* Paper texture overlay */
+        .paper-texture {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
+            opacity: 0.6;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .letter-header {
+            background: linear-gradient(135deg, #8b4513 0%, #a0522d 100%);
+            color: #f4e4c1;
+            padding: 35px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 3px solid #654321;
+        }
+
+        .letter-header::before {
+            content: '❦';
+            position: absolute;
+            font-size: 120px;
+            opacity: 0.08;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: serif;
+        }
+
+        .letter-header h1 {
+            font-size: 2.8rem;
+            font-weight: 400;
+            letter-spacing: 3px;
+            position: relative;
+            z-index: 1;
+            font-family: 'Dancing Script', cursive;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+        }
+
+        .letter-date {
+            opacity: 0.9;
+            font-size: 1rem;
+            font-style: italic;
+            letter-spacing: 1px;
+        }
+
+        .letter-content {
+            padding: 50px 40px;
+            color: #3d2914;
+            line-height: 2;
+            font-size: 1.25rem;
+            position: relative;
+            z-index: 3;
+            min-height: 400px;
+        }
+
+        /* Animation classes for letter content */
+        .letter-line {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 20px;
+            text-align: justify;
+            text-indent: 2em;
+        }
+
+        .letter-line.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .letter-line:first-child {
+            text-indent: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #8b4513;
+            margin-bottom: 30px;
+        }
+
+        .signature-block {
+            margin-top: 50px;
+            text-align: right;
+            opacity: 0;
+            transform: translateX(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .signature-block.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .signature-name {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            color: #8b4513;
+            margin-top: 10px;
+        }
+
+        .wax-seal {
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle at 35% 35%, #dc143c, #8b0000);
+            border-radius: 50%;
+            margin: 40px auto 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            box-shadow: 
+                0 6px 20px rgba(139, 0, 0, 0.4),
+                inset 0 -8px 15px rgba(0,0,0,0.2),
+                inset 0 8px 15px rgba(255,255,255,0.1);
+            position: relative;
+            opacity: 0;
+            transform: scale(0) rotate(-180deg);
+            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 4;
+        }
+
+        .wax-seal.visible {
+            opacity: 1;
+            transform: scale(1) rotate(0deg);
+        }
+
+        .wax-seal::after {
+            content: '';
+            position: absolute;
+            inset: 8px;
+            border: 3px dashed rgba(255,255,255,0.25);
+            border-radius: 50%;
+        }
+
+        .letter-footer {
+            background: rgba(139, 69, 19, 0.1);
+            padding: 25px;
+            text-align: center;
+            color: #8b4513;
+            font-size: 0.95rem;
+            font-style: italic;
+            border-top: 1px solid rgba(139, 69, 19, 0.2);
+            position: relative;
+            z-index: 3;
+        }
+
+        /* Corner decorations */
+        .corner {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(139, 69, 19, 0.3);
+            z-index: 3;
+        }
+
+        .corner-tl { top: 20px; left: 20px; border-right: 0; border-bottom: 0; }
+        .corner-tr { top: 20px; right: 20px; border-left: 0; border-bottom: 0; }
+        .corner-bl { bottom: 20px; left: 20px; border-right: 0; border-top: 0; }
+        .corner-br { bottom: 20px; right: 20px; border-left: 0; border-top: 0; }
+
+        /* BURNING ANIMATION STYLES */
+        .burn-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .burn-overlay.active {
+            opacity: 1;
+        }
+
+        /* Smoke effect */
+        .smoke-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 11;
+            opacity: 0;
+            transition: opacity 1s;
+        }
+
+        .smoke-container.active {
+            opacity: 1;
+        }
+
+        .smoke {
+            position: absolute;
+            background: radial-gradient(circle, rgba(100,100,100,0.4) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: smoke-rise 3s infinite ease-out;
+        }
+
+        @keyframes smoke-rise {
+            0% {
+                transform: translateY(0) scale(0.5);
+                opacity: 0;
+            }
+            20% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-200px) scale(2);
+                opacity: 0;
+            }
+        }
+
+        /* Fire particles */
+        .fire-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 12;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .fire-container.active {
+            opacity: 1;
+        }
+
+        .fire-particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: radial-gradient(circle, #ff6b35 0%, #f7931e 50%, transparent 100%);
+            border-radius: 50%;
+            animation: flicker 0.5s infinite alternate;
+            box-shadow: 0 0 10px #ff6b35, 0 0 20px #f7931e;
+        }
+
+        @keyframes flicker {
+            0% { transform: scale(1) rotate(0deg); opacity: 0.8; }
+            100% { transform: scale(1.3) rotate(180deg); opacity: 1; }
+        }
+
+        /* Charred edges effect */
+        .charred-edge {
+            position: absolute;
+            background: radial-gradient(circle at center, #2a2a2a 0%, #000 100%);
+            border-radius: 50%;
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 9;
+            box-shadow: 0 0 20px #ff6b35, inset 0 0 10px rgba(255, 107, 53, 0.5);
+        }
+
+        .charred-edge.active {
+            opacity: 1;
+            animation: burn-spread 2s forwards;
+        }
+
+        @keyframes burn-spread {
+            0% { transform: scale(0); }
+            100% { transform: scale(3); }
+        }
+
+        /* Ash particles */
+        .ash {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: #555;
+            border-radius: 50%;
+            opacity: 0;
+            animation: ash-fall 4s infinite linear;
+            z-index: 13;
+        }
+
+        @keyframes ash-fall {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(300px) translateX(50px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Warning message */
+        .burn-warning {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: linear-gradient(135deg, #ff4757 0%, #ff6348 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: bold;
+            z-index: 100;
+            opacity: 0;
+            transition: all 0.5s;
+            box-shadow: 0 10px 30px rgba(255, 71, 87, 0.4);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+        .burn-warning.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+            animation: pulse-warning 1s infinite;
+        }
+
+        @keyframes pulse-warning {
+            0%, 100% { box-shadow: 0 10px 30px rgba(255, 71, 87, 0.4); }
+            50% { box-shadow: 0 15px 40px rgba(255, 71, 87, 0.6); }
+        }
+
+        /* Letter disintegration */
+        .letter-screen.burning {
+            animation: letter-burn 8s forwards;
+        }
+
+        @keyframes letter-burn {
+            0% {
+                filter: brightness(1) sepia(0);
+                transform: scale(1);
+            }
+            20% {
+                filter: brightness(0.9) sepia(0.3);
+            }
+            40% {
+                filter: brightness(0.7) sepia(0.6) contrast(1.2);
+            }
+            60% {
+                filter: brightness(0.4) sepia(0.8) contrast(1.5);
+                transform: scale(0.98);
+            }
+            80% {
+                filter: brightness(0.2) sepia(1) contrast(2);
+                transform: scale(0.95);
+                opacity: 0.6;
+            }
+            100% {
+                filter: brightness(0.1) sepia(1) contrast(3);
+                transform: scale(0.9);
+                opacity: 0;
+            }
+        }
+
+        /* Final message after burning */
+        .ashes-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            opacity: 0;
+            transition: opacity 2s;
+            z-index: 50;
+            pointer-events: none;
+        }
+
+        .ashes-message.show {
+            opacity: 1;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container {
+                width: 95%;
+            }
+            
+            .password-screen {
+                padding: 40px 25px;
+            }
+            
+            .password-screen h2 {
+                font-size: 1.8rem;
+            }
+            
+            .letter-content {
+                padding: 35px 25px;
+                font-size: 1.1rem;
+            }
+            
+            .letter-header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .letter-line:first-child {
+                font-size: 1.3rem;
+            }
+        }
+
+        /* Success animation */
+        .success-check {
+            display: none;
+            font-size: 60px;
+            color: #2ecc71;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 20px rgba(46, 204, 113, 0.5));
+        }
+
+        .password-screen.success .lock-icon {
+            display: none;
+        }
+
+        .password-screen.success .success-check {
+            display: block;
+            animation: scale-in 0.5s ease;
+        }
+
+        @keyframes scale-in {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        /* Loading dots */
+        .loading {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: #ffd700;
+            border-radius: 50%;
+            margin: 0 5px;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .dot:nth-child(1) { animation-delay: -0.32s; }
+        .dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating particles -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Burn effects -->
+    <div class="burn-overlay" id="burnOverlay"></div>
+    <div class="smoke-container" id="smokeContainer"></div>
+    <div class="fire            outline: none;
             transition: all 0.3s ease;
             text-align: center;
             margin-bottom: 15px;
