@@ -1,0 +1,184 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* Background particles */
+.particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(255, 215, 0, 0.6);
+    border-radius: 50%;
+    animation: float-up 15s infinite linear;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+}
+
+@keyframes float-up {
+    0% {
+        transform: translateY(100vh) translateX(0) scale(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100vh) translateX(50px) scale(0);
+        opacity: 0;
+    }
+}
+
+/* Main container */
+.container {
+    position: relative;
+    z-index: 1;
+    width: 90%;
+    max-width: 400px;
+}
+
+/* Password box */
+.password-box {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 50px 40px;
+    text-align: center;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+}
+
+.lock-icon {
+    font-size: 60px;
+    margin-bottom: 20px;
+    display: block;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+h1 {
+    color: #ffd700;
+    font-size: 2rem;
+    font-family: 'Dancing Script', cursive;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+}
+
+.hint {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1rem;
+    margin-bottom: 30px;
+    font-style: italic;
+}
+
+/* Input field */
+.password-input {
+    width: 100%;
+    padding: 15px 20px;
+    font-size: 1.2rem;
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    border-radius: 50px;
+    outline: none;
+    text-align: center;
+    margin-bottom: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    font-family: 'Cormorant Garamond', serif;
+    transition: all 0.3s ease;
+}
+
+.password-input:focus {
+    border-color: #ffd700;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+}
+
+.password-input.error {
+    border-color: #ff4757;
+    animation: shake 0.5s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-10px); }
+    40% { transform: translateX(10px); }
+    60% { transform: translateX(-10px); }
+    80% { transform: translateX(10px); }
+}
+
+/* Button */
+.unlock-btn {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.1rem;
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    color: #1a1a2e;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-family: 'Cormorant Garamond', serif;
+    transition: all 0.3s ease;
+}
+
+.unlock-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+}
+
+/* Error message */
+.error-message {
+    color: #ff6b6b;
+    margin-top: 15px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-weight: 600;
+}
+
+.error-message.show {
+    opacity: 1;
+}
+
+/* Mobile responsive */
+@media (max-width: 480px) {
+    .password-box {
+        padding: 40px 25px;
+    }
+    
+    h1 {
+        font-size: 1.8rem;
+    }
+  }
+
