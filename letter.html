@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Ellie 💌</title>
+    <link rel="stylesheet" href="css/letter.css">
+</head>
+<body>
+    <!-- Burn effects -->
+    <div class="smoke-container" id="smokeContainer"></div>
+    <div class="fire-container" id="fireContainer"></div>
+    
+    <!-- Warning -->
+    <div class="burn-warning" id="burnWarning">
+        🔥 The letter is burning! Read faster! 🔥
+    </div>
+    
+    <!-- Final message -->
+    <div class="ashes-message" id="ashesMessage">
+        <div class="ashes-icon">🕯️</div>
+        <div>The letter has turned to ashes...</div>
+        <div class="ashes-subtitle">Some love letters are meant to be read quickly</div>
+    </div>
+
+    <div class="letter-container">
+        <div class="letter" id="letter">
+            <div class="paper-texture"></div>
+            
+            <div class="corner corner-tl"></div>
+            <div class="corner corner-tr"></div>
+            <div class="corner corner-bl"></div>
+            <div class="corner corner-br"></div>
+            
+            <header class="letter-header">
+                <h1>To My Dearest Ellie</h1>
+                <div class="letter-date" id="currentDate"></div>
+            </header>
+            
+            <div class="letter-body" id="letterBody">
+                <!-- Content injected by JS -->
+            </div>
+            
+            <footer class="letter-footer">
+                Sealed with eternal love ❦
+            </footer>
+        </div>
+    </div>
+
+    <script src="js/letter.js"></script>
+</body>
+</html>
+
