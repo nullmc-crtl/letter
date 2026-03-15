@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For You 💌</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        /* Floating hearts background animation */
+        .hearts-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .heart {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 20px;
+            animation: float 15s infinite linear;
+            bottom: -100px;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Main container */
+        .container {
+            position: relative;
+            z-index: 1;
+            width: 90%;
+            max-width: 600px;
+            perspective: 1000px;
+        }
+
+        /* Password Screen */
+        .password-screen {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            transform-style: preserve-3d;
+            transition: all 0.6s ease;
+        }
+
+        .password-screen.hidden {
+            opacity: 0;
+            transform: rotateY(-90deg);
+            pointer-events: none;
+        }
+
+        .lock-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .password-screen h2 {
+            color: #764ba2;
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+
+        .hint {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+            font-style: italic;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            border: 2px solid #ddd;
+            border-radius: 50px;
+            outline: none;
+            transition: all 0.3s ease;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .password-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .password-input.error {
+            border-color: #ff6b6b;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .unlock-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .unlock-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .unlock-btn:active {
+            transform: translateY(0);
+        }
+
+        .error-message {
+            color: #ff6b6b;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .error-message.show {
+            opacity: 1;
+        }
+
+        /* Letter Screen */
+        .letter-screen {
+            display: none;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            padding: 0;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            transform-style: preserve-3d;
+            opacity: 0;
+            transform: rotateY(90deg);
+            transition: all 0.6s ease;
+        }
+
+        .letter-screen.show {
+            display: block;
+            opacity: 1;
+            transform: rotateY(0deg);
+        }
+
+        .letter-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .letter-header::before {
+            content: '❤';
+            position: absolute;
+            font-size: 100px;
+            opacity: 0.1;
+            top: -20px;
+            right: -20px;
+        }
+
+        .letter-header h1 {
+            font-size: 2rem;
+            font-weight: normal;
+            letter-spacing: 2px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .letter-date {
+            opacity: 0.8;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        .letter-content {
+            padding: 40px 30px;
+            color: #444;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        .letter-content p {
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .letter-signature {
+            text-align: right;
+            margin-top: 40px;
+            font-style: italic;
+            color: #764ba2;
+            font-size: 1.2rem;
+        }
+
+        .letter-footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        /* Decorative elements */
+        .stamp {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 60px;
+            height: 80px;
+            background: #ff6b6b;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 30px;
+            transform: rotate(12deg);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            opacity: 0.9;
+        }
+
+        .wax-seal {
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle at 30% 30%, #ff6b6b, #c92a2a);
+            border-radius: 50%;
+            margin: 30px auto 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            box-shadow: 0 4px 15px rgba(201, 42, 42, 0.4), inset 0 -5px 10px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .wax-seal::after {
+            content: '';
+            position: absolute;
+            inset: 5px;
+            border: 2px dashed rgba(255,255,255,0.3);
+            border-radius: 50%;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                width: 95%;
+            }
+            
+            .password-screen, .letter-content {
+                padding: 30px 20px;
+            }
+            
+            .letter-header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .letter-content {
+                font-size: 1rem;
+            }
+        }
+
+        /* Success animation */
+        .success-check {
+            display: none;
+            font-size: 50px;
+            color: #51cf66;
+            margin-bottom: 15px;
+        }
+
+        .password-screen.success .lock-icon {
+            display: none;
+        }
+
+        .password-screen.success .success-check {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating hearts background -->
+    <div class="hearts-container" id="hearts"></div>
+
+    <div class="container">
+        <!-- Password Protection Screen -->
+        <div class="password-screen" id="passwordScreen">
+            <span class="lock-icon">🔒</span>
+            <span class="success-check">✓</span>
+            <h2>This letter is sealed</h2>
+            <p class="hint">Enter the password to unlock your message</p>
+            <input type="password" class="password-input" id="passwordInput" placeholder="Enter password...">
+            <button class="unlock-btn" onclick="checkPassword()">Unlock Letter</button>
+            <p class="error-message" id="errorMsg">Incorrect password. Try again 💔</p>
+        </div>
+
+        <!-- The Letter -->
+        <div class="letter-screen" id="letterScreen">
+            <div class="letter-header">
+                <div class="stamp">💌</div>
+                <h1>To My Dearest</h1>
+                <div class="letter-date" id="currentDate"></div>
+            </div>
+            
+            <div class="letter-content">
+                <!-- EDIT YOUR LETTER HERE -->
+                <p>My love,</p>
+                
+                <p>
+                    Every moment with you feels like a beautiful dream I never want to wake up from. 
+                    When I look into your eyes, I see my future, my home, and my heart's deepest desire.
+                </p>
+                
+                <p>
+                    You have this incredible way of making ordinary moments feel magical. 
+                    Whether we're sharing a quiet evening or laughing until our stomachs hurt, 
+                    every second spent with you is treasured in my heart.
+                </p>
+                
+                <p>
+                    Thank you for being my partner, my best friend, and my greatest adventure. 
+                    I promise to cherish you, support you, and love you more with each passing day.
+                </p>
+                
+                <p>
+                    Forever isn't long enough to show you how much you mean to me, 
+                    but I'll spend every day of my life trying.
+                </p>
+                
+                <div class="letter-signature">
+                    Yours always,<br>
+                    [Your Name]
+                </div>
+                
+                <div class="wax-seal">❤</div>
+            </div>
+            
+            <div class="letter-footer">
+                Sealed with love 💕
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration - CHANGE THIS PASSWORD
+        const CORRECT_PASSWORD = 'love2024'; // Change this to your desired password
+        
+        // Create floating hearts
+        function createHearts() {
+            const container = document.getElementById('hearts');
+            const heartSymbols = ['❤', '💕', '💗', '💖', '💝'];
+            
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                heart.style.animationDelay = Math.random() * 15 + 's';
+                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                container.appendChild(heart);
+            }
+        }
+
+        // Set current date
+        function setDate() {
+            const date = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('currentDate').textContent = date.toLocaleDateString('en-US', options);
+        }
+
+        // Password check
+        function checkPassword() {
+            const input = document.getElementById('passwordInput');
+            const errorMsg = document.getElementById('errorMsg');
+            const passwordScreen = document.getElementById('passwordScreen');
+            const letterScreen = document.getElementById('letterScreen');
+            
+            if (input.value === CORRECT_PASSWORD) {
+                // Success
+                passwordScreen.classList.add('success');
+                errorMsg.classList.remove('show');
+                
+                setTimeout(() => {
+                    passwordScreen.classList.add('hidden');
+                    setTimeout(() => {
+                        letterScreen.classList.add('show');
+                    }, 300);
+                }, 500);
+            } else {
+                // Error
+                input.classList.add('error');
+                errorMsg.classList.add('show');
+                
+                setTimeout(() => {
+                    input.classList.remove('error');
+                }, 500);
+            }
+        }
+
+        // Enter key support
+        document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+
+        // Initialize
+        createHearts();
+        setDate();
+    </script>
+</body>
+  </html>
+
