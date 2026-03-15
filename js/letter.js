@@ -41,8 +41,8 @@ function renderLetter() {
     sig.className = 'signature';
     sig.style.animationDelay = (letterContent.length * 0.5) + 's';
     sig.innerHTML = `
-        <div class="signature-text">Forever yours,</div>
-        <div class="signature-name">[Your Name]</div>
+        <div class="signature-text">forever yours,</div>
+        <div class="signature-name">Aiben J.</div>
     `;
     container.appendChild(sig);
     
